@@ -4,7 +4,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/fatih/color"
+	"gopkg.in/go-playground/webhooks.v5/github"
 	"io/ioutil"
+	"net/http"
 	"os"
 	"os/exec"
 	"os/signal"
@@ -43,7 +45,37 @@ const (
 	configFile = "DoCD-config.json"
 )
 
-func signalHandler(signalChan chan os.Signal, exitChan chan int) {
+func main() {
+	// Register signal handlers
+	signalChan := make(chan os.Signal, 1)
+	exitChan := make(chan int)
+	SignalHandler(signalChan, exitChan)
+
+	// Get config file
+	config := ReadConfig()
+
+	// Initialize services
+	InitializeServices(config)
+	color.Cyan("To terminate session, press CTRL+C")
+
+	// Initialize webhook
+	http.HandleFunc("/github-push-master", DeployMaster)
+	go http.ListenAndServe(":6000", nil)
+
+	// Wait for exit signal
+	code := <-exitChan
+
+	// Kill all services in their respective terminals
+	fmt.Println("Terminating services...")
+	for _, cmd := range cmdSlice {
+		cmd.Process.Kill()
+	}
+
+	os.Exit(code)
+}
+
+// SignalHandler : Handles all signals sent to DoCD
+func SignalHandler(signalChan chan os.Signal, exitChan chan int) {
 	signal.Notify(signalChan,
 		syscall.SIGHUP,
 		syscall.SIGINT,
@@ -74,7 +106,8 @@ func signalHandler(signalChan chan os.Signal, exitChan chan int) {
 	}()
 }
 
-func readConfig() Config {
+// ReadConfig : Reads the DoCD configuration file
+func ReadConfig() Config {
 	var config Config
 	configFile, err := os.Open(configFile)
 
@@ -89,7 +122,8 @@ func readConfig() Config {
 	return config
 }
 
-func initializeServices(config Config) {
+// InitializeServices : Installs service dependecies and launches services
+func InitializeServices(config Config) {
 	// Get working directory
 	dir, _ := os.Getwd()
 	for _, service := range config.Services {
@@ -119,7 +153,6 @@ func initializeServices(config Config) {
 		// Build service
 		for _, commandObj := range service.BuildCommands {
 			command := strings.Split(commandObj.Command, " ")
-			fmt.Println(command)
 			cmd := exec.Command(command[0], command[1:]...)
 			cmd.Env = os.Environ()
 			cmd.Env = append(cmd.Env, commandObj.Environment...)
@@ -139,27 +172,32 @@ func initializeServices(config Config) {
 	color.Cyan("All services started")
 }
 
-func main() {
-	// Register signal handlers
-	signalChan := make(chan os.Signal, 1)
-	exitChan := make(chan int)
-	signalHandler(signalChan, exitChan)
+// DeployMaster : Pulls latest commit from remote master and deploys
+func DeployMaster(res http.ResponseWriter, req *http.Request) {
+	hook, _ := github.New(github.Options.Secret(""))
+	// dir, _ := os.Getwd()
 
-	// Get config file
-	config := readConfig()
-
-	// Initialize services
-	initializeServices(config)
-	color.Cyan("To terminate session, press CTRL+C")
-
-	// Wait for exit signal
-	code := <-exitChan
-
-	// Kill all services in their respective terminals
-	fmt.Println("Terminating services...")
-	for _, cmd := range cmdSlice {
-		cmd.Process.Kill()
+	payload, err := hook.Parse(req, github.PushEvent)
+	if err != nil {
+		if err == github.ErrEventNotFound {
+			fmt.Println("Unknown event")
+		}
 	}
 
-	os.Exit(code)
+	switch payload.(type) {
+
+	case github.PushPayload:
+		push := payload.(github.PushPayload)
+		branchRef := push.Ref
+
+		if branchRef == "refs/heads/master" {
+			fmt.Println("Change detected on master - deploying...")
+			cmd := exec.Command("git", "pull")
+			err := cmd.Run()
+			if err != nil {
+				fmt.Println(err.Error())
+			}
+		}
+	}
+	fmt.Fprintf(res, "Hello, %s!", req.URL.Path[1:])
 }

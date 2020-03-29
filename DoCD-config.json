@@ -9,7 +9,7 @@
       "InstallationCommands": [
         {
           "Directory": "\\venv\\Scripts",
-          "Command": "activate.bat"
+          "Command": "cmd.exe /C activate.bat"
         },
         {
           "Directory": "\\flask",
