@@ -1,0 +1,10 @@
+# VS Code
+.vscode/*
+
+# Node
+**/node_modules
+
+# Python
+**/venv
+**/__pycache__
+**/*.egg-info
