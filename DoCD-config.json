@@ -1,9 +1,9 @@
 {
   "BasePackageManager": "choco",
-  "BuildFile": "quick_start.sh",
   "Services": [
     {
       "Type": "python",
+      "Path": "flask",
       "PackageManager": "pip",
       "InstallationCommands": [
         {
@@ -13,6 +13,30 @@
         {
           "Directory": "\\flask",
           "Command": "pip install -e ."
+        }
+      ],
+      "BuildCommands": [
+        {
+          "Directory": "\\flask",
+          "Command": "flask run --host=0.0.0.0",
+          "Environment": ["FLASK_APP=hello.py"]
+        }
+      ]
+    },
+    {
+      "Type": "node",
+      "Path": "client",
+      "PackageManager": "npm",
+      "InstallationCommands": [
+        {
+          "Directory": "\\client",
+          "Command": "npm install"
+        }
+      ],
+      "BuildCommands": [
+        {
+          "Directory": "\\client",
+          "Command": "npm run start"
         }
       ]
     }

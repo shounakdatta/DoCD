@@ -6,12 +6,15 @@ import (
 	"io/ioutil"
 	"os"
 	"os/exec"
+	"os/signal"
 	"strings"
+	"syscall"
 )
 
 type Command struct {
-	Directory string
-	Command   string
+	Directory   string
+	Command     string
+	Environment []string
 }
 
 type Service struct {
@@ -19,15 +22,61 @@ type Service struct {
 	Path                 string
 	PackageManager       string
 	InstallationCommands []Command
+	BuildCommands        []Command
 }
 
 type Config struct {
 	BasePackageManager string
-	BuildFile          string
 	Services           []Service
 }
 
+// Global variables
+var cmdSlice []*exec.Cmd
+
+// signalChan := make(chan os.Signal, 1)
+// exitChan := make(chan int)
+
+func signalHandler(signalChan chan os.Signal, exitChan chan int) {
+	signal.Notify(signalChan,
+		syscall.SIGHUP,
+		syscall.SIGINT,
+		syscall.SIGTERM,
+		syscall.SIGQUIT)
+
+	go func() {
+		for {
+			s := <-signalChan
+			switch s {
+			// kill -SIGHUP XXXX
+			case syscall.SIGHUP:
+				exitChan <- 0
+
+			// kill -SIGINT XXXX or Ctrl+c
+			case syscall.SIGINT:
+				exitChan <- 1
+
+			// kill -SIGTERM XXXX
+			case syscall.SIGTERM:
+				exitChan <- 0
+
+			// kill -SIGQUIT XXXX
+			case syscall.SIGQUIT:
+				exitChan <- 0
+
+			default:
+				fmt.Println("Unknown signal.")
+				exitChan <- 1
+			}
+		}
+	}()
+}
+
 func main() {
+	// Register signal handlers
+	signalChan := make(chan os.Signal, 1)
+	exitChan := make(chan int)
+	signalHandler(signalChan, exitChan)
+
 	// Get config file
 	configFile, err := os.Open("DoCD-config.json")
 
@@ -45,21 +94,47 @@ func main() {
 	// Get working directory
 	dir, _ := os.Getwd()
 
-	// Install service dependencies
+	// Initialize services
 	for _, service := range config.Services {
+
+		// Install service dependencies
+		fmt.Println("Installing", service.Type, "dependencies...")
 		for _, commandObj := range service.InstallationCommands {
 			command := strings.Split(commandObj.Command, " ")
 			cmd := exec.Command(command[0], command[1:]...)
 			path := dir + commandObj.Directory
 			cmd.Dir = path
-			stdout, err := cmd.Output()
+			_, err := cmd.Output()
 			if err != nil {
 				fmt.Println(err.Error())
 				return
 			}
-			fmt.Println(path, err, string(stdout))
+		}
+		fmt.Println("All", service.Type, "dependencies installed in", service.Path)
+
+		// Build service
+		for _, commandObj := range service.BuildCommands {
+			command := strings.Split(commandObj.Command, " ")
+			cmd := exec.Command(command[0], command[1:]...)
+			cmd.Env = os.Environ()
+			cmd.Env = append(cmd.Env, commandObj.Environment...)
+			path := dir + commandObj.Directory
+			cmd.Dir = path
+			err := cmd.Start()
+			cmdSlice = append(cmdSlice, cmd)
+			if err != nil {
+				fmt.Println(err.Error())
+				return
+			}
 		}
 	}
+	fmt.Println("All services started")
 
-	fmt.Println("Installing dependencies...")
+	code := <-exitChan
+	fmt.Println("Terminating services...")
+	for _, cmd := range cmdSlice {
+		cmd.Process.Kill()
+	}
+	os.Exit(code)
+	return
 }

@@ -8,3 +8,6 @@
 **/venv
 **/__pycache__
 **/*.egg-info
+
+# Log Files
+logs
