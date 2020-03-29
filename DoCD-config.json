@@ -1,0 +1,20 @@
+{
+  "BasePackageManager": "choco",
+  "BuildFile": "quick_start.sh",
+  "Services": [
+    {
+      "Type": "python",
+      "PackageManager": "pip",
+      "InstallationCommands": [
+        {
+          "Directory": "\\venv\\Scripts",
+          "Command": "activate.bat"
+        },
+        {
+          "Directory": "\\flask",
+          "Command": "pip install -e ."
+        }
+      ]
+    }
+  ]
+}
