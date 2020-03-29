@@ -5,6 +5,7 @@
       "Type": "python",
       "Path": "flask",
       "PackageManager": "pip",
+      "LogFile": "./logs/flask-service.log",
       "InstallationCommands": [
         {
           "Directory": "\\venv\\Scripts",
@@ -18,7 +19,7 @@
       "BuildCommands": [
         {
           "Directory": "\\flask",
-          "Command": "flask run --host=0.0.0.0",
+          "Command": "flask run",
           "Environment": ["FLASK_APP=hello.py"]
         }
       ]
@@ -27,6 +28,7 @@
       "Type": "node",
       "Path": "client",
       "PackageManager": "npm",
+      "LogFile": "./logs/react-service.log",
       "InstallationCommands": [
         {
           "Directory": "\\client",

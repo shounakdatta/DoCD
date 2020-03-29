@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/fatih/color"
 	"io/ioutil"
 	"os"
 	"os/exec"
@@ -11,20 +12,24 @@ import (
 	"syscall"
 )
 
+// Command : Structure of service installation and build commands
 type Command struct {
 	Directory   string
 	Command     string
 	Environment []string
 }
 
+// Service : Structure of configuration services
 type Service struct {
 	Type                 string
 	Path                 string
 	PackageManager       string
+	LogFile              string
 	InstallationCommands []Command
 	BuildCommands        []Command
 }
 
+// Config : Structure of DOCD-config.json
 type Config struct {
 	BasePackageManager string
 	Services           []Service
@@ -33,8 +38,10 @@ type Config struct {
 // Global variables
 var cmdSlice []*exec.Cmd
 
-// signalChan := make(chan os.Signal, 1)
-// exitChan := make(chan int)
+const (
+	// ConfigFile : Configuration file name
+	configFile = "DoCD-config.json"
+)
 
 func signalHandler(signalChan chan os.Signal, exitChan chan int) {
 	signal.Notify(signalChan,
@@ -47,19 +54,15 @@ func signalHandler(signalChan chan os.Signal, exitChan chan int) {
 		for {
 			s := <-signalChan
 			switch s {
-			// kill -SIGHUP XXXX
 			case syscall.SIGHUP:
 				exitChan <- 0
 
-			// kill -SIGINT XXXX or Ctrl+c
 			case syscall.SIGINT:
-				exitChan <- 1
+				exitChan <- 0
 
-			// kill -SIGTERM XXXX
 			case syscall.SIGTERM:
 				exitChan <- 0
 
-			// kill -SIGQUIT XXXX
 			case syscall.SIGQUIT:
 				exitChan <- 0
 
@@ -71,14 +74,9 @@ func signalHandler(signalChan chan os.Signal, exitChan chan int) {
 	}()
 }
 
-func main() {
-	// Register signal handlers
-	signalChan := make(chan os.Signal, 1)
-	exitChan := make(chan int)
-	signalHandler(signalChan, exitChan)
-
-	// Get config file
-	configFile, err := os.Open("DoCD-config.json")
+func readConfig() Config {
+	var config Config
+	configFile, err := os.Open(configFile)
 
 	if err != nil {
 		fmt.Println(err)
@@ -86,16 +84,20 @@ func main() {
 	}
 	defer configFile.Close()
 
-	// Read config file
 	byteValue, _ := ioutil.ReadAll(configFile)
-	var config Config
 	json.Unmarshal([]byte(byteValue), &config)
+	return config
+}
 
+func initializeServices(config Config) {
 	// Get working directory
 	dir, _ := os.Getwd()
-
-	// Initialize services
 	for _, service := range config.Services {
+		// Create log file
+		logFile, err := os.Create(service.LogFile)
+		if err != nil {
+			panic(err)
+		}
 
 		// Install service dependencies
 		fmt.Println("Installing", service.Type, "dependencies...")
@@ -104,37 +106,60 @@ func main() {
 			cmd := exec.Command(command[0], command[1:]...)
 			path := dir + commandObj.Directory
 			cmd.Dir = path
-			_, err := cmd.Output()
+			cmd.Stdout = logFile
+			err := cmd.Start()
 			if err != nil {
 				fmt.Println(err.Error())
-				return
+				os.Exit(1)
 			}
+			cmd.Wait()
 		}
 		fmt.Println("All", service.Type, "dependencies installed in", service.Path)
 
 		// Build service
 		for _, commandObj := range service.BuildCommands {
 			command := strings.Split(commandObj.Command, " ")
+			fmt.Println(command)
 			cmd := exec.Command(command[0], command[1:]...)
 			cmd.Env = os.Environ()
 			cmd.Env = append(cmd.Env, commandObj.Environment...)
 			path := dir + commandObj.Directory
 			cmd.Dir = path
+			cmd.Stdout = logFile
 			err := cmd.Start()
 			cmdSlice = append(cmdSlice, cmd)
 			if err != nil {
 				fmt.Println(err.Error())
-				return
+				os.Exit(1)
 			}
 		}
-	}
-	fmt.Println("All services started")
 
+		logFile.Close()
+	}
+	color.Cyan("All services started")
+}
+
+func main() {
+	// Register signal handlers
+	signalChan := make(chan os.Signal, 1)
+	exitChan := make(chan int)
+	signalHandler(signalChan, exitChan)
+
+	// Get config file
+	config := readConfig()
+
+	// Initialize services
+	initializeServices(config)
+	color.Cyan("To terminate session, press CTRL+C")
+
+	// Wait for exit signal
 	code := <-exitChan
+
+	// Kill all services in their respective terminals
 	fmt.Println("Terminating services...")
 	for _, cmd := range cmdSlice {
 		cmd.Process.Kill()
 	}
+
 	os.Exit(code)
-	return
 }
