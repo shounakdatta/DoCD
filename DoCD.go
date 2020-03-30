@@ -54,6 +54,12 @@ func main() {
 	// Get config file
 	config := ReadConfig()
 
+	// Get working directory
+	dir, _ := os.Getwd()
+
+	// Make log directory
+	os.MkdirAll(dir+"\\logs", os.ModePerm)
+
 	// Initialize services
 	InitializeServices(config)
 	color.Cyan("To terminate session, press CTRL+C")
@@ -188,14 +194,13 @@ func DeployMaster(res http.ResponseWriter, req *http.Request) {
 
 	case github.PushPayload:
 		push := payload.(github.PushPayload)
-		// branchRef := push.Ref
-
-		fmt.Println("Change detected on ", push.Ref, " - deploying...")
+		fmt.Println("Change detected on", push.Ref, "- deploying...")
 		cmd := exec.Command("git", "pull")
 		err := cmd.Run()
 		if err != nil {
 			fmt.Println(err.Error())
 		}
+		fmt.Println("Deployment complete")
 	}
 	fmt.Fprintf(res, "Hello, %s!", req.URL.Path[1:])
 }
