@@ -188,15 +188,13 @@ func DeployMaster(res http.ResponseWriter, req *http.Request) {
 
 	case github.PushPayload:
 		push := payload.(github.PushPayload)
-		branchRef := push.Ref
+		// branchRef := push.Ref
 
-		if branchRef == "refs/heads/master" {
-			fmt.Println("Change detected on master - deploying...")
-			cmd := exec.Command("git", "pull")
-			err := cmd.Run()
-			if err != nil {
-				fmt.Println(err.Error())
-			}
+		fmt.Println("Change detected on ", push.Ref, " - deploying...")
+		cmd := exec.Command("git", "pull")
+		err := cmd.Run()
+		if err != nil {
+			fmt.Println(err.Error())
 		}
 	}
 	fmt.Fprintf(res, "Hello, %s!", req.URL.Path[1:])
