@@ -1,5 +1,5 @@
 <p align="center">
-  <img src='./docs/media/DoCD-logo.png?raw=true' width='70%'>
+  <img src='./docs/media/DoCD-logo.png?raw=true' width='40%'>
 </p>
 
 ---
