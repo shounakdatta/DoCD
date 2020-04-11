@@ -1,0 +1,15 @@
+{
+	"ProjectName": "test",
+	"BasePackageManager": "choco",
+	"InstallServices": true,
+	"Services": [
+		{
+			"ServiceName": "python",
+			"PackageManager": "pip",
+			"Path": "./server",
+			"LogFilePath": "./logs/python-service.log",
+			"InstallationCommands": [],
+			"BuildCommands": []
+		}
+	]
+}
