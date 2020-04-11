@@ -26,7 +26,6 @@ func InitCmd() *cobra.Command {
 		RunE: func(cmd *cobra.Command, args []string) error {
 			// display welcome info.
 			shell.Println("Initializing DoCD...")
-
 			shell.Run()
 			return nil
 		},
@@ -36,7 +35,7 @@ func InitCmd() *cobra.Command {
 func generate() *ishell.Cmd {
 	return &ishell.Cmd{
 		Name: "generate",
-		Help: "Generates DoCD-config.json",
+		Help: fmt.Sprintf("Generates %s", docdtypes.ConfigFileName),
 		Func: func(c *ishell.Context) {
 			wd, err := os.Getwd()
 			if err != nil {
@@ -112,11 +111,12 @@ func generate() *ishell.Cmd {
 
 			outputText := "\n\nDoCD initialization complete.\n" +
 				"Enter service installation and build " +
-				"commands in the generated DoCD-config.json file."
+				fmt.Sprintf("commands in the generated %s file.", docdtypes.ConfigFileName) +
+				"\nEnter exit or ^C to finish."
 			c.Println(outputText)
 
 			file, _ := json.MarshalIndent(configFile, "", "	")
-			_ = ioutil.WriteFile(wd+"/DoCD-config.json", file, 0644)
+			_ = ioutil.WriteFile(fmt.Sprintf(wd+"/%s", docdtypes.ConfigFileName), file, 0644)
 
 		},
 	}

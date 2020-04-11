@@ -24,3 +24,8 @@ type Config struct {
 	InstallServices    bool
 	Services           []Service
 }
+
+const (
+	// ConfigFileName : Configuration file name
+	ConfigFileName = "DoCD-config.json"
+)

@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"fmt"
+	"github.com/shounakdatta/DoCD/internal/docdbuild"
 	"github.com/shounakdatta/DoCD/internal/docdinit"
 	"github.com/spf13/cobra"
 	"os"
@@ -21,6 +22,9 @@ func init() {
 
 	// Add docdinit package commands
 	rootCmd.AddCommand(docdinit.InitCmd())
+
+	// Add docdbuld package commands
+	rootCmd.AddCommand(docdbuild.BuildCmd())
 }
 
 // Execute : Runs the root command
