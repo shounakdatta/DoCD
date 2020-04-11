@@ -1,4 +1,8 @@
-# DoCD
+<p align="center">
+  <img src='./docs/media/DoCD-logo.png?raw=true' width='70%'>
+</p>
+
+---
 
 DoCD (pronounced 'Docked') is a containerization alternative to Docker. DoCD uses system relevant package managers for dependency management and has built-in continuous-deployment support with git webhooks.
 
