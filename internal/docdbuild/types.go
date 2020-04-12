@@ -5,8 +5,8 @@ import (
 	"os/exec"
 )
 
-// CmdReference : Storage struct for cmd instances
-type CmdReference struct {
+// cmdReference : Storage struct for cmd instances
+type cmdReference struct {
 	Cmd     *exec.Cmd
 	LogFile *os.File
 }

@@ -11,7 +11,7 @@ import (
 var (
 	rootCmd = &cobra.Command{
 		Use:   "docd",
-		Short: "A simple CLI App made with Go",
+		Short: "The CLI for docking and managing DoCD applications",
 	}
 )
 

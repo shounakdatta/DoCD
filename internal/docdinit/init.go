@@ -25,7 +25,8 @@ func InitCmd() *cobra.Command {
 		Short: "Initializes working directory with DoCD",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			// display welcome info.
-			shell.Println("Initializing DoCD...")
+			shell.Println("Initializing configuration generator...")
+			shell.Println("Enter `generate` to begin")
 			shell.Run()
 			return nil
 		},
@@ -41,6 +42,18 @@ func generate() *ishell.Cmd {
 			if err != nil {
 				c.Println(err.Error())
 				return
+			}
+			configFilePath := fmt.Sprintf(wd+"/%s", docdtypes.ConfigFileName)
+
+			if _, err = os.Stat(configFilePath); err == nil {
+				fmt.Println("A configuration file already exists.")
+				fmt.Println("Would you like to overwrite it? (y/N)")
+				overwriteConfig := c.ReadLine()
+				if overwriteConfig != "y" {
+					fmt.Println("Cancelling generator...")
+					fmt.Println("Enter `exit` or `Ctrl-c` to finish.")
+					return
+				}
 			}
 
 			c.ShowPrompt(false)
@@ -58,7 +71,6 @@ func generate() *ishell.Cmd {
 				"apt-get (Linux)",
 			}, "Base Package Manager: ")
 			configFile.BasePackageManager = choices[choice]
-			configFile.InstallServices = true
 
 			c.Print("Add a service? (Y/n)")
 			addService := c.ReadLine()
@@ -112,11 +124,11 @@ func generate() *ishell.Cmd {
 			outputText := "\n\nDoCD initialization complete.\n" +
 				"Enter service installation and build " +
 				fmt.Sprintf("commands in the generated %s file.", docdtypes.ConfigFileName) +
-				"\nEnter exit or ^C to finish."
+				"\nEnter `exit` or `Ctrl-c` to finish."
 			c.Println(outputText)
 
 			file, _ := json.MarshalIndent(configFile, "", "	")
-			_ = ioutil.WriteFile(fmt.Sprintf(wd+"/%s", docdtypes.ConfigFileName), file, 0644)
+			_ = ioutil.WriteFile(configFilePath, file, 0644)
 
 		},
 	}

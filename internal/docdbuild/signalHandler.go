@@ -7,8 +7,8 @@ import (
 	"syscall"
 )
 
-// SignalHandler : Handles all signals sent to DoCD
-func SignalHandler(signalChan chan os.Signal, exitChan chan int) {
+// signalHandler : Handles all signals sent to DoCD
+func signalHandler(signalChan chan os.Signal, exitChan chan int) {
 	signal.Notify(signalChan,
 		syscall.SIGHUP,
 		syscall.SIGINT,

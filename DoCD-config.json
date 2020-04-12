@@ -1,13 +1,12 @@
 {
   "ProjectName": "test",
   "BasePackageManager": "choco",
-  "InstallServices": true,
   "Services": [
     {
       "ServiceName": "nodejs",
       "PackageManager": "npm",
       "Path": "./client",
-      "LogFilePath": "./logs/react-service.log",
+      "LogFilePath": "./logs/nodejs-service.log",
       "InstallationCommands": [
         {
           "Directory": "\\client",

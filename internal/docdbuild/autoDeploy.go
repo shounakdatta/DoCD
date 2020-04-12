@@ -7,8 +7,8 @@ import (
 	"os/exec"
 )
 
-// AutoDeploy : Pulls latest commit from remote master and deploys
-func AutoDeploy(res http.ResponseWriter, req *http.Request) {
+// autoDeploy : Pulls latest commit from remote master and deploys
+func autoDeploy(res http.ResponseWriter, req *http.Request) {
 	hook, _ := github.New(github.Options.Secret(""))
 
 	payload, err := hook.Parse(req, github.PushEvent)

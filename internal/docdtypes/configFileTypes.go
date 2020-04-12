@@ -21,7 +21,6 @@ type Service struct {
 type Config struct {
 	ProjectName        string
 	BasePackageManager string
-	InstallServices    bool
 	Services           []Service
 }
 

@@ -7,7 +7,8 @@ import (
 
 func printTimeCmd() *cobra.Command {
 	return &cobra.Command{
-		Use: "curtime",
+		Use:   "curtime",
+		Short: "Returns current time in ruby format",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			now := time.Now()
 			prettyTime := now.Format(time.RubyDate)
