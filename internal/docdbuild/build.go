@@ -14,7 +14,10 @@ import (
 )
 
 // Global variables
-var cmdSlice []CmdReference
+var (
+	cmdSlice        []cmdReference
+	installServices bool = true
+)
 
 // BuildCmd : Installs dependencies and builds all services
 func BuildCmd() *cobra.Command {
@@ -25,7 +28,7 @@ func BuildCmd() *cobra.Command {
 			// Register signal handlers
 			signalChan := make(chan os.Signal, 1)
 			exitChan := make(chan int)
-			SignalHandler(signalChan, exitChan)
+			signalHandler(signalChan, exitChan)
 
 			// Get config file
 			config := ReadConfig()
@@ -36,12 +39,21 @@ func BuildCmd() *cobra.Command {
 			// Make log directory
 			os.MkdirAll(dir+"\\logs", os.ModePerm)
 
+			// Check if Admin
+			isAdmin, _ := checkAdmin()
+			if !isAdmin {
+				color.Yellow(
+					"Warning: You are not running DoCD as an administrator.\n" +
+						"Service installations will be skipped.")
+				installServices = false
+			}
+
 			// Initialize services
 			InitializeServices(config)
 			color.Cyan("To terminate session, press CTRL+C")
 
 			// Initialize webhook
-			http.HandleFunc("/github-push-master", AutoDeploy)
+			http.HandleFunc("/github-push-master", autoDeploy)
 			go http.ListenAndServe(":6000", nil)
 
 			// Wait for exit signal
@@ -80,7 +92,6 @@ func ReadConfig() docdtypes.Config {
 func InitializeServices(config docdtypes.Config) {
 	// Get working directory
 	dir, _ := os.Getwd()
-	installServices := config.InstallServices
 	for _, service := range config.Services {
 		// Create log file
 		logFile, err := os.Create(service.LogFilePath)
@@ -126,7 +137,7 @@ func InitializeServices(config docdtypes.Config) {
 			cmd.Stdout = logFile
 			cmd.Stderr = logFile
 			err := cmd.Start()
-			cmdSlice = append(cmdSlice, CmdReference{cmd, logFile})
+			cmdSlice = append(cmdSlice, cmdReference{cmd, logFile})
 			if err != nil {
 				fmt.Println(err.Error())
 				os.Exit(1)
