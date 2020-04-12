@@ -57,16 +57,16 @@ func BuildCmd() *cobra.Command {
 			go http.ListenAndServe(":6000", nil)
 
 			// Wait for exit signal
-			code := <-exitChan
+			_ = <-exitChan
 
 			// Kill all services in their respective terminals
 			fmt.Println("Terminating services...")
 			for _, cmdRef := range cmdSlice {
 				cmdRef.Cmd.Process.Kill()
+				cmdRef.Cmd.Process.Wait()
 				cmdRef.LogFile.Close()
 			}
 
-			os.Exit(code)
 			return nil
 		},
 	}
