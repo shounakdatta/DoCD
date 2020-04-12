@@ -1,0 +1,47 @@
+{
+  "ProjectName": "simple-flask-react-webapp",
+  "BasePackageManager": "choco",
+  "Services": [
+    {
+      "ServiceName": "python",
+      "Path": "flask",
+      "PackageManager": "pip",
+      "LogFilePath": "./logs/flask-service.log",
+      "InstallationCommands": [
+        {
+          "Directory": "\\venv\\Scripts",
+          "Command": "cmd.exe /C activate.bat"
+        },
+        {
+          "Directory": "\\flask",
+          "Command": "pip install -e ."
+        }
+      ],
+      "BuildCommands": [
+        {
+          "Directory": "\\flask",
+          "Command": "flask run",
+          "Environment": ["FLASK_APP=hello.py", "FLASK_DEBUG=1"]
+        }
+      ]
+    },
+    {
+      "ServiceName": "nodejs",
+      "PackageManager": "npm",
+      "Path": "./client",
+      "LogFilePath": "./logs/nodejs-service.log",
+      "InstallationCommands": [
+        {
+          "Directory": "\\client",
+          "Command": "npm install"
+        }
+      ],
+      "BuildCommands": [
+        {
+          "Directory": "\\client",
+          "Command": "npm run start"
+        }
+      ]
+    }
+  ]
+}
