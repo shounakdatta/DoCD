@@ -47,11 +47,11 @@ The `DoCD-config.json` file is a hybrid of the NodeJS `package.json` file and Do
 
 #### Base Configuration
 
-| Field              | Type                                      | Description                                                |                       Options                        | Required |
-| :----------------- | :---------------------------------------- | :--------------------------------------------------------- | :--------------------------------------------------: | :------: |
-| ProjectName        | String                                    | The name of your project                                   |                          -                           |  False   |
-| BasePackageManager | String                                    | The software manager used by DoCD to install your services | `choco` (Windows), `brew` (macOS), `apt-get` (Linux) |   True   |
-| Services           | Array ([Service](#service-configuration)) | The configurations for each of your project services       |                          -                           |   True   |
+| Field              | Type                                      | Description                                                |                          Options                           | Required |
+| :----------------- | :---------------------------------------- | :--------------------------------------------------------- | :--------------------------------------------------------: | :------: |
+| ProjectName        | String                                    | The name of your project                                   |                             -                              |  False   |
+| BasePackageManager | String                                    | The software manager used by DoCD to install your services | `choco` (Windows)<br> `brew` (macOS)<br> `apt-get` (Linux) |   True   |
+| Services           | Array ([Service](#service-configuration)) | The configurations for each of your project services       |                             -                              |   True   |
 
 #### Service Configuration
 

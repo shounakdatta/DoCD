@@ -1,5 +1,5 @@
 {
-  "ProjectName": "simple-flask-react-webapp",
+  "ProjectName": "simple-flask-app",
   "BasePackageManager": "choco",
   "Services": [
     {
