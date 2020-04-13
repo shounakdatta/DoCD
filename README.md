@@ -38,6 +38,9 @@ my-project/
    2. Enter `generate` to launch the configuration generator utility
    3. Proceed through the prompts, enter `exit` or `Ctrl-c` to finish
 6. Add your service installation and build commands in the newly generated `DoCD-config.json` file (NOTE: For help, see [here](#understanding-the-`DoCD-config.json`-file))
+7. Build your project
+   1. Navigate to your project root directory
+   2. Enter `docd build`
 
 ## Understanding the `DoCD-config.json` File
 
