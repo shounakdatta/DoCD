@@ -62,6 +62,7 @@ The `DoCD-config.json` file is a hybrid of the NodeJS `package.json` file and Do
 | Path                 | String                                    | Path to the directory where you store the code for your service    |  (i.e. [`./service-1`](#expected-project-directory-structure))  |  False   |
 | LogFilePath          | String                                    | Path to the file where you want to store the logs for your service |                  (i.e. `./logs/service-1.log`)                  |   True   |
 | InstallationCommands | Array ([Command](#command-configuration)) | Commands to install and configure the service                      |                                -                                |   True   |
+| BuildCommands        | Array ([Command](#command-configuration)) | Commands to compile and launch the service                         |                                -                                |   True   |
 
 #### Command Configuration
 
