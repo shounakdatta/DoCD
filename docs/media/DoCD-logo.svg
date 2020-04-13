@@ -48,11 +48,11 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.98994949"
-     inkscape:cx="199.64089"
-     inkscape:cy="856.76101"
+     inkscape:zoom="0.35"
+     inkscape:cx="-302.10521"
+     inkscape:cy="967.59079"
      inkscape:document-units="mm"
-     inkscape:current-layer="layer1"
+     inkscape:current-layer="layer3"
      showgrid="false"
      inkscape:snap-bbox="true"
      inkscape:bbox-paths="true"
@@ -70,7 +70,7 @@
        type="xygrid"
        id="grid815" />
     <sodipodi:guide
-       position="206.22012,194.83949"
+       position="333.91802,272.89881"
        orientation="1,0"
        id="guide1235"
        inkscape:locked="false" />
@@ -80,7 +80,7 @@
        id="guide1237"
        inkscape:locked="false" />
     <sodipodi:guide
-       position="194.30494,167.36152"
+       position="268.3631,136.10423"
        orientation="0,1"
        id="guide1239"
        inkscape:locked="false" />
@@ -98,7 +98,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -107,12 +107,12 @@
      id="layer3"
      inkscape:label="Layer 0">
     <rect
-       style="opacity:0.98999999;fill:#ffffff;fill-opacity:0.99215686;stroke:none;stroke-width:2.40650821;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       style="opacity:0.98999999;fill:#ffffff;fill-opacity:0.99215686;stroke:none;stroke-width:3.37657666;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="rect1218"
-       width="210.96875"
-       height="138.07603"
+       width="338.66666"
+       height="169.33333"
        x="-4.7486348"
-       y="-8.4375572"
+       y="-8.4375591"
        inkscape:export-xdpi="1080.08"
        inkscape:export-ydpi="1080.08" />
   </g>
@@ -121,27 +121,28 @@
      inkscape:groupmode="layer"
      id="layer1">
     <path
-       style="opacity:0.98999999;fill:#00d4e8;fill-opacity:1;stroke:none;stroke-width:0.56400001;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       style="opacity:0.98999999;fill:#00d4e8;fill-opacity:1;stroke:none;stroke-width:0.68947136;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        clip-path="none"
-       d="M 35.251365,31.562443 V 89.770776 A 29.104166,29.104166 0 0 0 64.355532,60.666609 29.104166,29.104166 0 0 0 35.251365,31.562443 Z"
+       d="M 84.787494,40.617527 V 112.00292 A 35.465426,35.692694 0 0 0 120.25292,76.310221 35.465426,35.692694 0 0 0 84.787494,40.617527 Z"
        id="rect821"
        inkscape:export-xdpi="1080.08"
        inkscape:export-ydpi="1080.08"
        inkscape:connector-curvature="0" />
-    <circle
-       style="opacity:0.98999999;fill:#00d4e8;fill-opacity:1;stroke:none;stroke-width:0.56400001;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+    <ellipse
+       style="opacity:0.98999999;fill:#00d4e8;fill-opacity:1;stroke:none;stroke-width:0.68947136;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="path853"
-       cx="81.553452"
-       cy="75.218735"
-       r="14.552083"
+       cx="141.20976"
+       cy="94.156639"
        inkscape:export-xdpi="1080.08"
-       inkscape:export-ydpi="1080.08" />
+       inkscape:export-ydpi="1080.08"
+       rx="17.732712"
+       ry="17.846346" />
     <g
        id="g1188"
        style="fill:#767dff;fill-opacity:0.99215686"
        inkscape:export-xdpi="1080.08"
        inkscape:export-ydpi="1080.08"
-       transform="translate(6.1471991,20.312484)">
+       transform="matrix(1.2185687,0,0,1.2263775,49.322068,26.820832)">
       <path
          inkscape:connector-curvature="0"
          id="rect821-3"
@@ -158,7 +159,7 @@
     </g>
     <g
        id="g1184"
-       transform="translate(-5.0975869,20.312484)"
+       transform="matrix(1.2185687,0,0,1.2263775,35.619523,26.820832)"
        style="fill:#767dff;fill-opacity:1"
        inkscape:export-xdpi="1080.08"
        inkscape:export-ydpi="1080.08">

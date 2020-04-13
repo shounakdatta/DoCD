@@ -41,7 +41,7 @@ my-project/
 
 ## Understanding the `DoCD-config.json` File
 
-The `DoCD-config.json` file is a hybrid of the NodeJS `package.json` file and Docker's `Dockerfile`. It stores basic project information, such as Project Name, along with, service installation an build instructons.
+The `DoCD-config.json` file is a hybrid of the NodeJS `package.json` file and Docker's `Dockerfile`. It stores basic project information, such as Project Name, along with, service installation an build instructions.
 
 ### Configuration Fields
 
