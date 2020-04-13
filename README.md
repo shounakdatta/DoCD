@@ -29,7 +29,7 @@ my-project/
 
 ## Getting Started
 
-1. Download and extract the latest DoCD binaries from the [release page](https://github.com/microsoftarchive/redis)
+1. Download and extract the latest DoCD binaries from the [release page](https://github.com/shounakdatta/DoCD/releases)
 2. Download and install the latest version of [Chocolatey](https://chocolatey.org/install)
 3. (Optional) Add the location of your extracted binaries to your [User PATH environment variable](https://helpdeskgeek.com/windows-10/add-windows-path-environment-variable/)
 4. In an **administrative shell**, navigate to your project directory
@@ -109,3 +109,13 @@ The `DoCD-config.json` file is a hybrid of the NodeJS `package.json` file and Do
   ]
 }
 ```
+
+## License
+
+### Code
+
+All DoCD source code is licensed under the [MIT License](./LICENSE).
+
+### Logo
+
+Copyright to Shounak Datta, 2020.
