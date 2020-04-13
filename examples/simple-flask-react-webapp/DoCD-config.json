@@ -9,6 +9,10 @@
       "LogFilePath": "./logs/flask-service.log",
       "InstallationCommands": [
         {
+          "Directory": "",
+          "Command": "python -m venv venv"
+        },
+        {
           "Directory": "\\venv\\Scripts",
           "Command": "cmd.exe /C activate.bat"
         },
