@@ -3,6 +3,16 @@
   "BasePackageManager": "choco",
   "Services": [
     {
+      "ServiceName": "redis-64",
+      "LogFilePath": "./logs/redis-service.log",
+      "BuildCommands": [
+        {
+          "Directory": "",
+          "Command": "redis-server"
+        }
+      ]
+    },
+    {
       "ServiceName": "python",
       "Path": "flask",
       "PackageManager": "pip",

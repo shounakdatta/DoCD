@@ -7,19 +7,15 @@ import (
 	"github.com/spf13/cobra"
 	"net/http"
 	"os"
+	"os/exec"
+	"strings"
 )
 
-// Global variables
-var (
-	cmdSlice        []cmdReference
-	installServices bool = true
-)
-
-// BuildCmd : Installs dependencies and builds all services
-func BuildCmd() *cobra.Command {
+// StartCmd : Launches all services using the build commands in DoCD-config.json
+func StartCmd() *cobra.Command {
 	return &cobra.Command{
-		Use:   "build",
-		Short: "Installs dependencies and builds all services",
+		Use:   "start",
+		Short: "Launches all services",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			// Register signal handlers
 			signalChan := make(chan os.Signal, 1)
@@ -35,17 +31,8 @@ func BuildCmd() *cobra.Command {
 			// Make log directory
 			os.MkdirAll(dir+"\\logs", os.ModePerm)
 
-			// Check if Admin
-			isAdmin, _ := checkAdmin()
-			if !isAdmin {
-				color.Yellow(
-					"Warning: You are not running DoCD as an administrator.\n" +
-						"Service installations will be skipped.")
-				installServices = false
-			}
-
-			// Initialize services
-			InitializeServices(config)
+			// Start services
+			startServices(config)
 
 			// Initialize webhook
 			http.HandleFunc("/github-push-master", autoDeploy)
@@ -67,25 +54,37 @@ func BuildCmd() *cobra.Command {
 	}
 }
 
-// InitializeServices : Installs service dependecies and launches services
-func InitializeServices(config docdtypes.Config) {
+func startServices(config docdtypes.Config) {
 	// Get working directory
 	dir, _ := os.Getwd()
+
 	for _, service := range config.Services {
 		// Create log file
 		logFile, err := os.Create(service.LogFilePath)
 		if err != nil {
 			panic(err)
 		}
-
-		// Install services and service dependencies
-		installService(service, config.BasePackageManager)
-		installServiceDependencies(service, dir)
-
-		// Build service
 		startService(service, dir, logFile)
-		color.Cyan("All services started")
-		color.Cyan("To terminate session, press CTRL+C")
+	}
+	color.Cyan("All services started")
+	color.Cyan("To terminate session, press CTRL+C")
+}
 
+func startService(service docdtypes.Service, dir string, logFile *os.File) {
+	for _, commandObj := range service.BuildCommands {
+		command := strings.Split(commandObj.Command, " ")
+		cmd := exec.Command(command[0], command[1:]...)
+		cmd.Env = os.Environ()
+		cmd.Env = append(cmd.Env, commandObj.Environment...)
+		path := dir + commandObj.Directory
+		cmd.Dir = path
+		cmd.Stdout = logFile
+		cmd.Stderr = logFile
+		err := cmd.Start()
+		cmdSlice = append(cmdSlice, cmdReference{cmd, logFile})
+		if err != nil {
+			fmt.Println(err.Error())
+			os.Exit(1)
+		}
 	}
 }

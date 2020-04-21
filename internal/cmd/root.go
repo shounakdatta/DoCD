@@ -23,8 +23,10 @@ func init() {
 	// Add docdinit package commands
 	rootCmd.AddCommand(docdinit.InitCmd())
 
-	// Add docdbuld package commands
+	// Add docdbuild package commands
 	rootCmd.AddCommand(docdbuild.BuildCmd())
+	rootCmd.AddCommand(docdbuild.InstallCmd())
+	rootCmd.AddCommand(docdbuild.StartCmd())
 }
 
 // Execute : Runs the root command
