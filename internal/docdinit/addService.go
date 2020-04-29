@@ -6,14 +6,16 @@ import (
 	"github.com/fatih/color"
 	"github.com/shounakdatta/DoCD/internal/docdtypes"
 	"gopkg.in/abiosoft/ishell.v2"
+	"io/ioutil"
 	"os"
 	"path/filepath"
 	"strings"
 )
 
 var (
-	cyan = color.New(color.FgCyan).SprintFunc()
-	red  = color.New(color.FgRed).SprintFunc()
+	cyan   = color.New(color.FgCyan).SprintFunc()
+	red    = color.New(color.FgRed).SprintFunc()
+	yellow = color.New(color.FgYellow).SprintFunc()
 )
 
 func addServiceCmd() *ishell.Cmd {
@@ -37,7 +39,7 @@ func addServiceCmd() *ishell.Cmd {
 
 func addNewService(c *ishell.Context) docdtypes.Service {
 	var newService docdtypes.Service
-	c.Println(cyan("Enter `exit` to stop utility"))
+	c.Println(cyan("\nEnter `exit` to stop utility\n"))
 
 	// Get service name
 	serviceName := "python"
@@ -86,7 +88,7 @@ func addNewService(c *ishell.Context) docdtypes.Service {
 		addInstCommand, _ = checkInterrupt(c.ReadLine(), true)
 	}
 
-	c.Print("Add build commands? (Y/n)")
+	c.Print("Add build commands? (Y/n): ")
 	addBuildCommand, _ := checkInterrupt(c.ReadLine(), true)
 	newService.BuildCommands = []docdtypes.Command{}
 	for addBuildCommand != "n" {
@@ -110,7 +112,7 @@ func addNewCommand(c *ishell.Context) (docdtypes.Command, error) {
 	cwd, _ := os.Getwd()
 	c.SetPrompt(fmt.Sprintf("%s>", cwd))
 	c.ShowPrompt(true)
-	c.Println(cyan("Enter `exit` to cancel command entry"))
+	c.Println(cyan("\nEnter `exit` to cancel command entry\n"))
 
 	for newCmd.Command == "" {
 		command, exit := checkInterrupt(c.ReadLine(), false)
@@ -134,6 +136,19 @@ func addNewCommand(c *ishell.Context) (docdtypes.Command, error) {
 			newCmd.Directory += dirChange
 			cwd = filepath.Dir(cwd + "\\" + dirChange)
 			c.SetPrompt(fmt.Sprintf("%s>", cwd))
+		} else if cmdChunks[0] == "ls" {
+			files, err := ioutil.ReadDir(cwd)
+			if err != nil {
+				c.Println(red(err))
+			} else {
+				for _, f := range files {
+					fname := f.Name()
+					if f.IsDir() {
+						fname = fname + "/"
+					}
+					fmt.Println(fname)
+				}
+			}
 		} else if cmdChunks[0] == "export" {
 			newCmd.Environment = append(newCmd.Environment, cmdChunks[1:]...)
 		} else {
