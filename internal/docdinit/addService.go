@@ -145,14 +145,3 @@ func addNewCommand(c *ishell.Context) (docdtypes.Command, error) {
 	c.ShowPrompt(false)
 	return newCmd, nil
 }
-
-func checkInterrupt(input string, closeOnExit bool) (string, bool) {
-	if input == "exit" {
-		if closeOnExit {
-			shell.Close()
-			os.Exit(1)
-		}
-		return input, true
-	}
-	return input, false
-}

@@ -5,6 +5,7 @@ import (
 	"github.com/shounakdatta/DoCD/internal/docdtypes"
 	"github.com/spf13/cobra"
 	"gopkg.in/abiosoft/ishell.v2"
+	"os"
 )
 
 var (
@@ -45,7 +46,7 @@ func generate() *ishell.Cmd {
 			if docdtypes.CheckConfigExists() {
 				fmt.Println("A configuration file already exists.")
 				fmt.Println("Would you like to overwrite it? (y/N)")
-				overwriteConfig := c.ReadLine()
+				overwriteConfig, _ := checkInterrupt(c.ReadLine(), true)
 				if overwriteConfig != "y" {
 					fmt.Println("Cancelling generator...")
 					fmt.Println("Enter `exit` or `Ctrl-c` to finish.")
@@ -59,7 +60,7 @@ func generate() *ishell.Cmd {
 			var configFile docdtypes.Config
 
 			c.Print("Package Name: ")
-			configFile.ProjectName = c.ReadLine()
+			configFile.ProjectName, _ = checkInterrupt(c.ReadLine(), true)
 
 			choices := []string{"choco", "brew", "apt-get"}
 			choice := c.MultiChoice([]string{
@@ -70,13 +71,13 @@ func generate() *ishell.Cmd {
 			configFile.BasePackageManager = choices[choice]
 
 			c.Print("Add a service? (Y/n)")
-			addService := c.ReadLine()
+			addService, _ := checkInterrupt(c.ReadLine(), true)
 			for addService != "n" {
 				newService := addNewService(c)
 				configFile.Services = append(configFile.Services, newService)
 
 				c.Print("Add another service? (Y/n): ")
-				addService = c.ReadLine()
+				addService, _ = checkInterrupt(c.ReadLine(), true)
 			}
 
 			outputText := "\n\nDoCD initialization complete.\n" +
@@ -91,4 +92,15 @@ func generate() *ishell.Cmd {
 			}
 		},
 	}
+}
+
+func checkInterrupt(input string, closeOnExit bool) (string, bool) {
+	if input == "exit" {
+		if closeOnExit {
+			shell.Close()
+			os.Exit(1)
+		}
+		return input, true
+	}
+	return input, false
 }
