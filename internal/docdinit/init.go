@@ -1,13 +1,10 @@
 package docdinit
 
 import (
-	"encoding/json"
 	"fmt"
 	"github.com/shounakdatta/DoCD/internal/docdtypes"
 	"github.com/spf13/cobra"
 	"gopkg.in/abiosoft/ishell.v2"
-	"io/ioutil"
-	"os"
 )
 
 var (
@@ -16,6 +13,8 @@ var (
 
 func init() {
 	shell.AddCmd(generate())
+	shell.AddCmd(addServiceCmd())
+	shell.Interrupt(interruptHandler)
 }
 
 // InitCmd : Initializes DoCD iShell that generates DoCD-config.json
@@ -26,11 +25,16 @@ func InitCmd() *cobra.Command {
 		RunE: func(cmd *cobra.Command, args []string) error {
 			// display welcome info.
 			shell.Println("Initializing configuration generator...")
-			shell.Println("Enter `generate` to begin")
+			shell.Println("Enter `help` for a list of commands")
 			shell.Run()
 			return nil
 		},
 	}
+}
+
+func interruptHandler(c *ishell.Context, count int, str string) {
+	fmt.Println(count, str)
+	shell.Stop()
 }
 
 func generate() *ishell.Cmd {
@@ -38,14 +42,7 @@ func generate() *ishell.Cmd {
 		Name: "generate",
 		Help: fmt.Sprintf("Generates %s", docdtypes.ConfigFileName),
 		Func: func(c *ishell.Context) {
-			wd, err := os.Getwd()
-			if err != nil {
-				c.Println(err.Error())
-				return
-			}
-			configFilePath := fmt.Sprintf(wd+"/%s", docdtypes.ConfigFileName)
-
-			if _, err = os.Stat(configFilePath); err == nil {
+			if docdtypes.CheckConfigExists() {
 				fmt.Println("A configuration file already exists.")
 				fmt.Println("Would you like to overwrite it? (y/N)")
 				overwriteConfig := c.ReadLine()
@@ -75,46 +72,7 @@ func generate() *ishell.Cmd {
 			c.Print("Add a service? (Y/n)")
 			addService := c.ReadLine()
 			for addService != "n" {
-				var newService docdtypes.Service
-
-				// Get service name
-				serviceName := "python"
-				c.Print(fmt.Sprintf("Service Name (%s): ", serviceName))
-				newServiceName := c.ReadLine()
-				if newServiceName != "" {
-					serviceName = newServiceName
-				}
-				newService.ServiceName = serviceName
-
-				// Get package manager
-				packageManager := "pip"
-				c.Print(fmt.Sprintf("Package Manager (%s): ", packageManager))
-				newPackageManager := c.ReadLine()
-				if newPackageManager != "" {
-					packageManager = newPackageManager
-				}
-				newService.PackageManager = packageManager
-
-				// Get service path
-				servicePath := "./server"
-				c.Print(fmt.Sprintf("Path (%s): ", servicePath))
-				newServicePath := c.ReadLine()
-				if newServicePath != "" {
-					servicePath = newServicePath
-				}
-				newService.Path = servicePath
-
-				logFile := fmt.Sprintf("./logs/%s-service.log", serviceName)
-				c.Print(fmt.Sprintf("Log File Path (%s): ", logFile))
-				newLogFile := c.ReadLine()
-				if newLogFile != "" {
-					logFile = newLogFile
-				}
-				newService.LogFilePath = logFile
-
-				newService.InstallationCommands = []docdtypes.Command{}
-				newService.BuildCommands = []docdtypes.Command{}
-
+				newService := addNewService(c)
 				configFile.Services = append(configFile.Services, newService)
 
 				c.Print("Add another service? (Y/n): ")
@@ -127,9 +85,10 @@ func generate() *ishell.Cmd {
 				"\nEnter `exit` or `Ctrl-c` to finish."
 			c.Println(outputText)
 
-			file, _ := json.MarshalIndent(configFile, "", "	")
-			_ = ioutil.WriteFile(configFilePath, file, 0644)
-
+			err := docdtypes.WriteConfig(configFile)
+			if err != nil {
+				panic(err)
+			}
 		},
 	}
 }

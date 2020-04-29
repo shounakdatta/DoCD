@@ -3,39 +3,32 @@
   "BasePackageManager": "choco",
   "Services": [
     {
-      "ServiceName": "redis-64",
-      "LogFilePath": "./logs/redis-service.log",
-      "BuildCommands": [
-        {
-          "Directory": "",
-          "Command": "redis-server"
-        }
-      ]
-    },
-    {
       "ServiceName": "python",
-      "Path": "flask",
       "PackageManager": "pip",
-      "LogFilePath": "./logs/flask-service.log",
+      "Path": "flask",
+      "LogFilePath": "./logs/python-service.log",
       "InstallationCommands": [
         {
-          "Directory": "",
-          "Command": "python -m venv venv"
+          "Directory": "\\",
+          "Command": "python -m venv venv",
+          "Environment": []
         },
         {
-          "Directory": "\\venv\\Scripts",
-          "Command": "cmd.exe /C activate.bat"
+          "Directory": "\\venv\\Scripts\\",
+          "Command": "cmd.exe /C activate.bat",
+          "Environment": []
         },
         {
-          "Directory": "\\flask",
-          "Command": "pip install -e ."
+          "Directory": "\\flask\\",
+          "Command": "pip install -e .",
+          "Environment": []
         }
       ],
       "BuildCommands": [
         {
-          "Directory": "\\flask",
+          "Directory": "\\flask\\",
           "Command": "flask run",
-          "Environment": ["FLASK_APP=hello.py", "FLASK_DEBUG=1"]
+          "Environment": ["FLASK_APP=hello.py"]
         }
       ]
     },
@@ -46,14 +39,16 @@
       "LogFilePath": "./logs/nodejs-service.log",
       "InstallationCommands": [
         {
-          "Directory": "\\client",
-          "Command": "npm install"
+          "Directory": "\\client\\",
+          "Command": "npm install",
+          "Environment": []
         }
       ],
       "BuildCommands": [
         {
-          "Directory": "\\client",
-          "Command": "npm run start"
+          "Directory": "\\client\\",
+          "Command": "npm run start",
+          "Environment": []
         }
       ]
     }

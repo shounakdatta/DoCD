@@ -46,7 +46,7 @@ func installServicesAndDependencies(config docdtypes.Config) {
 
 func installService(service docdtypes.Service, bpm string) {
 	if installServices {
-		serviceCmd := exec.Command(bpm, "install", service.ServiceName)
+		serviceCmd := exec.Command(bpm, "install", service.ServiceName, "--confirm")
 		serviceCmd.Stdout = os.Stdout
 		serviceErr := serviceCmd.Run()
 		if serviceErr != nil {
