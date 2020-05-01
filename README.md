@@ -29,16 +29,14 @@ my-project/
 
 ## Getting Started
 
-1. Download and extract the latest DoCD binaries from the [release page](https://github.com/shounakdatta/DoCD/releases)
-2. Download and install the latest version of [Chocolatey](https://chocolatey.org/install)
-3. (Optional) Add the location of your extracted binaries to your [User PATH environment variable](https://helpdeskgeek.com/windows-10/add-windows-path-environment-variable/)
-4. In an **administrative shell**, navigate to your project directory
-5. Generate your `DoCD-config.json` configuration file
+1. Download and extract the latest DoCD binaries (the zip file) from the [release page](https://github.com/shounakdatta/DoCD/releases)
+2. Run the `DoCD Installer 1.0.0.exe` executable as an **administrator**
+3. In an **administrative shell**, navigate to your project directory
+4. Generate your `DoCD-config.json` configuration file (NOTE: For help, see [here](#understanding-the-`DoCD-config.json`-file))
    1. Enter `docd init` to launch the interactive shell
    2. Enter `generate` to launch the configuration generator utility
    3. Proceed through the prompts, enter `exit` or `Ctrl-c` to finish
-6. Add your service installation and build commands in the newly generated `DoCD-config.json` file (NOTE: For help, see [here](#understanding-the-`DoCD-config.json`-file))
-7. Build your project
+5. Build your project
    1. Navigate to your project root directory
    2. Enter `docd build`
 
