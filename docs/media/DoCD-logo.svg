@@ -9,9 +9,9 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="210mm"
-   height="297mm"
-   viewBox="0 0 210 297"
+   width="400mm"
+   height="560mm"
+   viewBox="0 0 400 560"
    version="1.1"
    id="svg8"
    inkscape:version="0.92.3 (2405546, 2018-03-11)"
@@ -48,9 +48,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.35"
-     inkscape:cx="-302.10521"
-     inkscape:cy="967.59079"
+     inkscape:zoom="0.49497475"
+     inkscape:cx="279.91059"
+     inkscape:cy="1058.3827"
      inkscape:document-units="mm"
      inkscape:current-layer="layer3"
      showgrid="false"
@@ -65,7 +65,8 @@
      inkscape:window-y="-11"
      inkscape:window-maximized="1"
      showguides="true"
-     inkscape:guide-bbox="true">
+     inkscape:guide-bbox="true"
+     units="mm">
     <inkscape:grid
        type="xygrid"
        id="grid815" />
@@ -98,51 +99,145 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
   <g
      inkscape:groupmode="layer"
      id="layer3"
-     inkscape:label="Layer 0">
+     inkscape:label="Layer 0"
+     transform="translate(0,263)">
     <rect
-       style="opacity:0.98999999;fill:#ffffff;fill-opacity:0.99215686;stroke:none;stroke-width:3.37657666;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       style="opacity:0.98999999;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:3.37657666;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="rect1218"
        width="338.66666"
        height="169.33333"
-       x="-4.7486348"
+       x="20.374701"
        y="-8.4375591"
-       inkscape:export-xdpi="1080.08"
-       inkscape:export-ydpi="1080.08" />
+       inkscape:export-xdpi="81"
+       inkscape:export-ydpi="81"
+       inkscape:export-filename="C:\Users\Shounak PC\Documents\GitHub\docd-installer\media\DoCD-logo-transparent.png" />
+    <rect
+       style="opacity:0.98999999;fill:#ffffff;fill-opacity:0;stroke:none;stroke-width:1.51140559;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="rect1218-8"
+       width="107.19188"
+       height="107.19188"
+       x="50.727856"
+       y="171.58134"
+       inkscape:export-xdpi="118.48"
+       inkscape:export-ydpi="118.48"
+       inkscape:export-filename="C:\Users\Shounak PC\Documents\GitHub\docd-installer\media\icon.png" />
+    <rect
+       style="opacity:0.98999999;fill:#ffffff;fill-opacity:0.03100775;stroke:none;stroke-width:1.86300862;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="rect1218-5"
+       width="186.85756"
+       height="93.42878"
+       x="104.88521"
+       y="-176.27655"
+       inkscape:export-xdpi="81"
+       inkscape:export-ydpi="81"
+       inkscape:export-filename="C:\Users\Shounak PC\Documents\GitHub\docd-installer\media\DoCD-logo-transparent.png" />
+    <path
+       style="opacity:0.98999999;fill:#00d4e8;fill-opacity:1;stroke:none;stroke-width:0.68947136;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       clip-path="none"
+       d="m 118.51679,-165.17374 v 71.385387 a 35.465427,35.692694 0 0 0 35.46543,-35.692697 35.465427,35.692694 0 0 0 -35.46543,-35.69269 z"
+       id="rect821-7"
+       inkscape:export-xdpi="81"
+       inkscape:export-ydpi="81"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="C:\Users\Shounak PC\Documents\GitHub\docd-installer\media\DoCD-logo-transparent.png" />
+    <ellipse
+       style="opacity:0.98999999;fill:#00d4e8;fill-opacity:1;stroke:none;stroke-width:0.68947136;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="path853-84"
+       cx="174.93907"
+       cy="-111.63464"
+       inkscape:export-xdpi="81"
+       inkscape:export-ydpi="81"
+       rx="17.732712"
+       ry="17.846348"
+       inkscape:export-filename="C:\Users\Shounak PC\Documents\GitHub\docd-installer\media\DoCD-logo-transparent.png" />
+    <g
+       id="g1188-0"
+       style="fill:#767dff;fill-opacity:0.99215686"
+       inkscape:export-xdpi="81"
+       inkscape:export-ydpi="81"
+       transform="matrix(1.2185687,0,0,1.2263775,83.051366,-178.97044)"
+       inkscape:export-filename="C:\Users\Shounak PC\Documents\GitHub\docd-installer\media\DoCD-logo-transparent.png">
+      <path
+         inkscape:connector-curvature="0"
+         id="rect821-3-6"
+         d="m 123.03125,11.394136 v 10.652063 a 18.520822,18.520822 0 0 1 15.875,18.307926 18.520822,18.520822 0 0 1 -15.875,18.312577 V 69.326 A 29.104166,29.104166 0 0 0 149.48958,40.354125 29.104166,29.104166 0 0 0 123.03125,11.394136 Z"
+         clip-path="none"
+         style="opacity:0.98999999;fill:#767dff;fill-opacity:0.99215686;stroke:none;stroke-width:0.56400001;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+      <rect
+         y="35.0625"
+         x="146.84375"
+         height="10.583333"
+         width="13.229166"
+         id="rect1070-3"
+         style="opacity:0.98999999;fill:#767dff;fill-opacity:0.99215686;stroke:none;stroke-width:0.56400001;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    </g>
+    <g
+       id="g1184-7"
+       transform="matrix(1.2185687,0,0,1.2263775,69.34882,-178.97044)"
+       style="fill:#767dff;fill-opacity:1"
+       inkscape:export-xdpi="81"
+       inkscape:export-ydpi="81"
+       inkscape:export-filename="C:\Users\Shounak PC\Documents\GitHub\docd-installer\media\DoCD-logo-transparent.png">
+      <circle
+         r="14.552083"
+         cy="40.354168"
+         cx="132.29166"
+         id="path853-8-7"
+         style="opacity:0.98999999;fill:#767dff;fill-opacity:1;stroke:none;stroke-width:0.56400001;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+      <path
+         id="rect821-3-3-2"
+         transform="scale(0.26458333)"
+         d="m 490,43.064453 a 110,110 0 0 0 -100,109.455077 110,110 0 0 0 100,109.5 v -40.28711 a 69.999957,69.999957 0 0 1 -60,-69.21289 69.999957,69.999957 0 0 1 60,-69.195311 z"
+         clip-path="none"
+         style="opacity:0.98999999;fill:#767dff;fill-opacity:1;stroke:none;stroke-width:2.13165355;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         inkscape:connector-curvature="0" />
+      <rect
+         y="35.0625"
+         x="107.15625"
+         height="10.583333"
+         width="13.229167"
+         id="rect1070-6-2"
+         style="opacity:0.98999999;fill:#767dff;fill-opacity:1;stroke:none;stroke-width:0.56400001;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    </g>
   </g>
   <g
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
-     id="layer1">
+     id="layer1"
+     transform="translate(0,263)">
     <path
        style="opacity:0.98999999;fill:#00d4e8;fill-opacity:1;stroke:none;stroke-width:0.68947136;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        clip-path="none"
-       d="M 84.787494,40.617527 V 112.00292 A 35.465426,35.692694 0 0 0 120.25292,76.310221 35.465426,35.692694 0 0 0 84.787494,40.617527 Z"
+       d="M 109.91083,40.617527 V 112.00292 A 35.465426,35.692694 0 0 0 145.37626,76.310221 35.465426,35.692694 0 0 0 109.91083,40.617527 Z"
        id="rect821"
-       inkscape:export-xdpi="1080.08"
-       inkscape:export-ydpi="1080.08"
-       inkscape:connector-curvature="0" />
+       inkscape:export-xdpi="81"
+       inkscape:export-ydpi="81"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="C:\Users\Shounak PC\Documents\GitHub\docd-installer\media\DoCD-logo-transparent.png" />
     <ellipse
        style="opacity:0.98999999;fill:#00d4e8;fill-opacity:1;stroke:none;stroke-width:0.68947136;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="path853"
-       cx="141.20976"
+       cx="166.3331"
        cy="94.156639"
-       inkscape:export-xdpi="1080.08"
-       inkscape:export-ydpi="1080.08"
+       inkscape:export-xdpi="81"
+       inkscape:export-ydpi="81"
        rx="17.732712"
-       ry="17.846346" />
+       ry="17.846346"
+       inkscape:export-filename="C:\Users\Shounak PC\Documents\GitHub\docd-installer\media\DoCD-logo-transparent.png" />
     <g
        id="g1188"
        style="fill:#767dff;fill-opacity:0.99215686"
-       inkscape:export-xdpi="1080.08"
-       inkscape:export-ydpi="1080.08"
-       transform="matrix(1.2185687,0,0,1.2263775,49.322068,26.820832)">
+       inkscape:export-xdpi="81"
+       inkscape:export-ydpi="81"
+       transform="matrix(1.2185687,0,0,1.2263775,74.445404,26.820832)"
+       inkscape:export-filename="C:\Users\Shounak PC\Documents\GitHub\docd-installer\media\DoCD-logo-transparent.png">
       <path
          inkscape:connector-curvature="0"
          id="rect821-3"
@@ -159,10 +254,11 @@
     </g>
     <g
        id="g1184"
-       transform="matrix(1.2185687,0,0,1.2263775,35.619523,26.820832)"
+       transform="matrix(1.2185687,0,0,1.2263775,60.742859,26.820832)"
        style="fill:#767dff;fill-opacity:1"
-       inkscape:export-xdpi="1080.08"
-       inkscape:export-ydpi="1080.08">
+       inkscape:export-xdpi="81"
+       inkscape:export-ydpi="81"
+       inkscape:export-filename="C:\Users\Shounak PC\Documents\GitHub\docd-installer\media\DoCD-logo-transparent.png">
       <circle
          r="14.552083"
          cy="40.354168"
@@ -184,9 +280,59 @@
          id="rect1070-6"
          style="opacity:0.98999999;fill:#767dff;fill-opacity:1;stroke:none;stroke-width:0.56400001;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
     </g>
+    <g
+       id="g1188-6"
+       style="fill:#767dff;fill-opacity:0.99215686"
+       inkscape:export-xdpi="118.48"
+       inkscape:export-ydpi="118.48"
+       transform="matrix(1.2185687,0,0,1.2263775,-43.180127,175.68784)"
+       inkscape:export-filename="C:\Users\Shounak PC\Documents\GitHub\docd-installer\media\icon.png">
+      <path
+         inkscape:connector-curvature="0"
+         id="rect821-3-5"
+         d="m 123.03125,11.394136 v 10.652063 a 18.520822,18.520822 0 0 1 15.875,18.307926 18.520822,18.520822 0 0 1 -15.875,18.312577 V 69.326 A 29.104166,29.104166 0 0 0 149.48958,40.354125 29.104166,29.104166 0 0 0 123.03125,11.394136 Z"
+         clip-path="none"
+         style="opacity:0.98999999;fill:#767dff;fill-opacity:0.99215686;stroke:none;stroke-width:0.56400001;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+      <rect
+         y="35.0625"
+         x="146.84375"
+         height="10.583333"
+         width="13.229166"
+         id="rect1070-0"
+         style="opacity:0.98999999;fill:#767dff;fill-opacity:0.99215686;stroke:none;stroke-width:0.56400001;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    </g>
+    <g
+       id="g1184-2"
+       transform="matrix(1.2185687,0,0,1.2263775,-56.882678,175.68784)"
+       style="fill:#02d4e8;fill-opacity:1"
+       inkscape:export-xdpi="118.48"
+       inkscape:export-ydpi="118.48"
+       inkscape:export-filename="C:\Users\Shounak PC\Documents\GitHub\docd-installer\media\icon.png">
+      <circle
+         r="14.552083"
+         cy="40.354168"
+         cx="132.29166"
+         id="path853-8-1"
+         style="opacity:0.98999999;fill:#02d4e8;fill-opacity:1;stroke:none;stroke-width:0.56400001;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+      <path
+         id="rect821-3-3-9"
+         transform="scale(0.26458333)"
+         d="m 490,43.064453 a 110,110 0 0 0 -100,109.455077 110,110 0 0 0 100,109.5 v -40.28711 a 69.999957,69.999957 0 0 1 -60,-69.21289 69.999957,69.999957 0 0 1 60,-69.195311 z"
+         clip-path="none"
+         style="opacity:0.98999999;fill:#02d4e8;fill-opacity:1;stroke:none;stroke-width:2.13165355;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         inkscape:connector-curvature="0" />
+      <rect
+         y="35.0625"
+         x="107.15625"
+         height="10.583333"
+         width="13.229167"
+         id="rect1070-6-9"
+         style="opacity:0.98999999;fill:#02d4e8;fill-opacity:1;stroke:none;stroke-width:0.56400001;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    </g>
   </g>
   <g
      inkscape:groupmode="layer"
      id="layer2"
-     inkscape:label="Layer 2" />
+     inkscape:label="Layer 2"
+     transform="translate(0,263)" />
 </svg>
