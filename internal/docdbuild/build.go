@@ -80,6 +80,7 @@ func InitializeServices(config docdtypes.Config) {
 
 		// Install services and service dependencies
 		installService(service, config.BasePackageManager)
+		refreshEnv()
 		installServiceDependencies(service, dir)
 
 		// Build service
