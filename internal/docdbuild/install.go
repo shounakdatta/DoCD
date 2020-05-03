@@ -10,9 +10,11 @@ import (
 	"strings"
 )
 
+var installDependenciesOnly bool
+
 // InstallCmd : Installs services and service dependencies
 func InstallCmd() *cobra.Command {
-	return &cobra.Command{
+	installCmd := cobra.Command{
 		Use:   "install",
 		Short: "Installs services and service dependencies",
 		RunE: func(cmd *cobra.Command, args []string) error {
@@ -33,13 +35,18 @@ func InstallCmd() *cobra.Command {
 			return nil
 		},
 	}
+	installCmd.Flags().BoolVarP(&installDependenciesOnly, "dependencies-only", "d", false, "Skips service installations, installs service dependencies")
+	return &installCmd
 }
 
 func installServicesAndDependencies(config docdtypes.Config) {
 	// Get working directory
 	dir, _ := os.Getwd()
 	for _, service := range config.Services {
-		installService(service, config.BasePackageManager)
+		if !installDependenciesOnly {
+			installService(service, config.BasePackageManager)
+			refreshEnv()
+		}
 		installServiceDependencies(service, dir)
 	}
 }
@@ -53,6 +60,15 @@ func installService(service docdtypes.Service, bpm string) {
 			fmt.Println(serviceErr.Error())
 			os.Exit(1)
 		}
+	}
+}
+
+func refreshEnv() {
+	refreshCmd := exec.Command("refreshenv")
+	refreshErr := refreshCmd.Run()
+	if refreshErr != nil {
+		fmt.Println(refreshErr.Error())
+		os.Exit(1)
 	}
 }
 
