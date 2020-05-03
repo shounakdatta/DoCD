@@ -5,11 +5,19 @@ import (
 	"github.com/fatih/color"
 	"github.com/shounakdatta/DoCD/internal/docdtypes"
 	"github.com/spf13/cobra"
+	"gopkg.in/abiosoft/ishell.v2"
 	"net/http"
 	"os"
 	"os/exec"
 	"strings"
 )
+
+var shell = ishell.New()
+
+func init() {
+	shell.AddCmd(terminateServicesCmd())
+	shell.Interrupt(interruptHandler)
+}
 
 // StartCmd : Launches all services using the build commands in DoCD-config.json
 func StartCmd() *cobra.Command {
@@ -18,9 +26,9 @@ func StartCmd() *cobra.Command {
 		Short: "Launches all services",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			// Register signal handlers
-			signalChan := make(chan os.Signal, 1)
-			exitChan := make(chan int)
-			signalHandler(signalChan, exitChan)
+			// signalChan := make(chan os.Signal, 1)
+			// exitChan := make(chan int)
+			// signalHandler(signalChan, exitChan)
 
 			// Get config file
 			config := docdtypes.ReadConfig()
@@ -39,15 +47,9 @@ func StartCmd() *cobra.Command {
 			go http.ListenAndServe(":6000", nil)
 
 			// Wait for exit signal
-			_ = <-exitChan
+			// _ = <-exitChan
 
-			// Kill all services in their respective terminals
-			fmt.Println("Terminating services...")
-			for _, cmdRef := range cmdSlice {
-				cmdRef.Cmd.Process.Kill()
-				cmdRef.Cmd.Process.Wait()
-				cmdRef.LogFile.Close()
-			}
+			shell.Run()
 
 			return nil
 		},
@@ -87,4 +89,31 @@ func startService(service docdtypes.Service, dir string, logFile *os.File) {
 			os.Exit(1)
 		}
 	}
+}
+
+func terminateServicesCmd() *ishell.Cmd {
+	return &ishell.Cmd{
+		Name:    "terminate",
+		Aliases: []string{"exit", "stop"},
+		Help:    "Terminates all services",
+		Func: func(c *ishell.Context) {
+			TerminateServices()
+		},
+	}
+}
+
+// TerminateServices : Terminates all active services
+func TerminateServices() {
+	// Kill all services in their respective terminals
+	fmt.Println("Terminating services...")
+	for _, cmdRef := range cmdSlice {
+		cmdRef.Cmd.Process.Kill()
+		cmdRef.LogFile.Close()
+	}
+	os.Exit(0)
+}
+
+func interruptHandler(c *ishell.Context, count int, str string) {
+	shell.Stop()
+	TerminateServices()
 }
