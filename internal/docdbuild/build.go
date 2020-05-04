@@ -1,7 +1,6 @@
 package docdbuild
 
 import (
-	"fmt"
 	"github.com/fatih/color"
 	"github.com/shounakdatta/DoCD/internal/docdtypes"
 	"github.com/spf13/cobra"
@@ -12,6 +11,7 @@ import (
 // Global variables
 var (
 	cmdSlice        []cmdReference
+	cmdMap               = make(map[string][]int)
 	installServices bool = true
 )
 
@@ -21,11 +21,6 @@ func BuildCmd() *cobra.Command {
 		Use:   "build",
 		Short: "Installs dependencies and builds all services",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			// Register signal handlers
-			signalChan := make(chan os.Signal, 1)
-			exitChan := make(chan int)
-			signalHandler(signalChan, exitChan)
-
 			// Get config file
 			config := docdtypes.ReadConfig()
 
@@ -51,17 +46,7 @@ func BuildCmd() *cobra.Command {
 			http.HandleFunc("/github-push-master", autoDeploy)
 			go http.ListenAndServe(":6000", nil)
 
-			// Wait for exit signal
-			_ = <-exitChan
-
-			// Kill all services in their respective terminals
-			fmt.Println("Terminating services...")
-			for _, cmdRef := range cmdSlice {
-				cmdRef.Cmd.Process.Kill()
-				cmdRef.Cmd.Process.Wait()
-				cmdRef.LogFile.Close()
-			}
-
+			startshell.Run()
 			return nil
 		},
 	}

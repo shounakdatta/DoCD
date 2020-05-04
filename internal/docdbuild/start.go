@@ -5,11 +5,27 @@ import (
 	"github.com/fatih/color"
 	"github.com/shounakdatta/DoCD/internal/docdtypes"
 	"github.com/spf13/cobra"
+	"gopkg.in/abiosoft/ishell.v2"
 	"net/http"
 	"os"
 	"os/exec"
+	"strconv"
 	"strings"
 )
+
+var (
+	startshell = ishell.New()
+	ciLogFile  *os.File
+	exitChan   chan int
+)
+
+func init() {
+	startshell.DeleteCmd("exit")
+	startshell.AddCmd(terminateServicesCmd())
+	startshell.AddCmd(enableCICmd())
+	startshell.AddCmd(disableCICmd())
+	startshell.Interrupt(interruptHandler)
+}
 
 // StartCmd : Launches all services using the build commands in DoCD-config.json
 func StartCmd() *cobra.Command {
@@ -17,11 +33,6 @@ func StartCmd() *cobra.Command {
 		Use:   "start",
 		Short: "Launches all services",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			// Register signal handlers
-			signalChan := make(chan os.Signal, 1)
-			exitChan := make(chan int)
-			signalHandler(signalChan, exitChan)
-
 			// Get config file
 			config := docdtypes.ReadConfig()
 
@@ -32,31 +43,22 @@ func StartCmd() *cobra.Command {
 			os.MkdirAll(dir+"\\logs", os.ModePerm)
 
 			// Start services
-			startServices(config)
+			startAllServices(config)
 
 			// Initialize webhook
 			http.HandleFunc("/github-push-master", autoDeploy)
 			go http.ListenAndServe(":6000", nil)
 
-			// Wait for exit signal
-			_ = <-exitChan
-
-			// Kill all services in their respective terminals
-			fmt.Println("Terminating services...")
-			for _, cmdRef := range cmdSlice {
-				cmdRef.Cmd.Process.Kill()
-				cmdRef.Cmd.Process.Wait()
-				cmdRef.LogFile.Close()
-			}
-
+			startshell.Run()
 			return nil
 		},
 	}
 }
 
-func startServices(config docdtypes.Config) {
+func startAllServices(config docdtypes.Config) {
 	// Get working directory
 	dir, _ := os.Getwd()
+	ciLogFile, _ = os.Create("../logs/ci-service.log")
 
 	for _, service := range config.Services {
 		// Create log file
@@ -67,7 +69,7 @@ func startServices(config docdtypes.Config) {
 		startService(service, dir, logFile)
 	}
 	color.Cyan("All services started")
-	color.Cyan("To terminate session, press CTRL+C")
+	color.Cyan("To terminate session, enter `terminate` or press CTRL+C")
 }
 
 func startService(service docdtypes.Service, dir string, logFile *os.File) {
@@ -81,10 +83,84 @@ func startService(service docdtypes.Service, dir string, logFile *os.File) {
 		cmd.Stdout = logFile
 		cmd.Stderr = logFile
 		err := cmd.Start()
-		cmdSlice = append(cmdSlice, cmdReference{cmd, logFile})
+		cmdSlice = append(cmdSlice, cmdReference{cmd, logFile, false})
+		cmdMap[service.ServiceName] = append(cmdMap[service.ServiceName], len(cmdSlice)-1)
 		if err != nil {
 			fmt.Println(err.Error())
 			os.Exit(1)
 		}
 	}
+}
+
+func terminateServicesCmd() *ishell.Cmd {
+	return &ishell.Cmd{
+		Name:    "terminate",
+		Aliases: []string{"exit", "stop"},
+		Help:    "Terminates all services",
+		Func: func(c *ishell.Context) {
+			startshell.Stop()
+			terminateAllServices()
+		},
+	}
+}
+
+func terminateAllServices() {
+	color.Cyan("Terminating services...")
+	for _, cmdRef := range cmdSlice {
+		terminateService(&cmdRef)
+	}
+	color.Cyan("All services terminated")
+	os.Exit(0)
+}
+
+func terminateService(cmdRef *cmdReference) {
+	if cmdRef.LogFile != nil {
+		cmdRef.LogFile.Close()
+	}
+
+	if !cmdRef.Terminated {
+		kill := exec.Command("taskkill", "/T", "/F", "/PID", strconv.Itoa(cmdRef.Cmd.Process.Pid))
+		err := kill.Run()
+		if err != nil {
+			fmt.Println("Error killing process")
+			return
+		}
+		fmt.Println("A process was killed")
+		cmdRef.Terminated = true
+	}
+}
+
+func enableCICmd() *ishell.Cmd {
+	return &ishell.Cmd{
+		Name: "enable-ci",
+		Help: "Enables continuous deployment",
+		Func: func(c *ishell.Context) {
+			command := strings.Split("ngrok http 6000", " ")
+			cmd := exec.Command(command[0], command[1:]...)
+			cmd.Stdout = os.Stdout
+			cmd.Stderr = ciLogFile
+			err := cmd.Start()
+			cmdSlice = append(cmdSlice, cmdReference{Cmd: cmd})
+			cmdMap["ci"] = append(cmdMap["ci"], len(cmdSlice)-1)
+			if err != nil {
+				fmt.Println(err.Error())
+				os.Exit(1)
+			}
+		},
+	}
+}
+
+func disableCICmd() *ishell.Cmd {
+	return &ishell.Cmd{
+		Name: "disable-ci",
+		Help: "Disables continuous deployment",
+		Func: func(c *ishell.Context) {
+			terminateService(&cmdSlice[cmdMap["ci"][0]])
+		},
+	}
+}
+
+func interruptHandler(c *ishell.Context, count int, str string) {
+	startshell.Stop()
+	terminateAllServices()
 }

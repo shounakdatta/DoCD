@@ -34,7 +34,6 @@ func InitCmd() *cobra.Command {
 }
 
 func interruptHandler(c *ishell.Context, count int, str string) {
-	fmt.Println(count, str)
 	shell.Stop()
 }
 

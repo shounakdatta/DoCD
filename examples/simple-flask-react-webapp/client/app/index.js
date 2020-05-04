@@ -5,7 +5,7 @@ class App extends Component {
   constructor() {
     super();
     this.state = {
-      serverResponse: ""
+      serverResponse: "",
     };
   }
 
@@ -14,11 +14,11 @@ class App extends Component {
       method: "GET",
       mode: "cors",
       headers: {
-        "Content-Type": "application/json"
-      }
+        "Content-Type": "application/json",
+      },
     })
-      .then(res => res.json())
-      .then(res => {
+      .then((res) => res.json())
+      .then((res) => {
         this.setState({ serverResponse: res.text });
       });
   }
