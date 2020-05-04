@@ -132,7 +132,7 @@ func enableCICmd() *ishell.Cmd {
 		Name: "enable-ci",
 		Help: "Enables continuous deployment",
 		Func: func(c *ishell.Context) {
-			command := strings.Split("ngrok http 5000", " ")
+			command := strings.Split("ngrok http 6000", " ")
 			cmd := exec.Command(command[0], command[1:]...)
 			cmd.Stdout = os.Stdout
 			cmd.Stderr = ciLogFile
