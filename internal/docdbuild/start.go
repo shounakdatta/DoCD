@@ -83,7 +83,7 @@ func startService(service docdtypes.Service, dir string, logFile *os.File) {
 		cmd.Stdout = logFile
 		cmd.Stderr = logFile
 		err := cmd.Start()
-		cmdSlice = append(cmdSlice, cmdReference{cmd, logFile})
+		cmdSlice = append(cmdSlice, cmdReference{cmd, logFile, false})
 		cmdMap[service.ServiceName] = append(cmdMap[service.ServiceName], len(cmdSlice)-1)
 		if err != nil {
 			fmt.Println(err.Error())
@@ -106,25 +106,28 @@ func terminateServicesCmd() *ishell.Cmd {
 
 func terminateAllServices() {
 	color.Cyan("Terminating services...")
-	fmt.Println(cmdMap)
 	for _, cmdRef := range cmdSlice {
-		terminateService(cmdRef)
+		terminateService(&cmdRef)
 	}
 	color.Cyan("All services terminated")
 	os.Exit(0)
 }
 
-func terminateService(cmdRef cmdReference) {
+func terminateService(cmdRef *cmdReference) {
 	if cmdRef.LogFile != nil {
 		cmdRef.LogFile.Close()
 	}
 
-	kill := exec.Command("taskkill", "/T", "/F", "/PID", strconv.Itoa(cmdRef.Cmd.Process.Pid))
-	err := kill.Run()
-	if err != nil {
-		fmt.Println("Error killing process")
+	if !cmdRef.Terminated {
+		kill := exec.Command("taskkill", "/T", "/F", "/PID", strconv.Itoa(cmdRef.Cmd.Process.Pid))
+		err := kill.Run()
+		if err != nil {
+			fmt.Println("Error killing process")
+			return
+		}
+		fmt.Println("A process was killed")
+		cmdRef.Terminated = true
 	}
-	fmt.Println("A process was killed")
 }
 
 func enableCICmd() *ishell.Cmd {
@@ -152,8 +155,7 @@ func disableCICmd() *ishell.Cmd {
 		Name: "disable-ci",
 		Help: "Disables continuous deployment",
 		Func: func(c *ishell.Context) {
-			terminateService(cmdSlice[cmdMap["ci"][0]])
-			cmdMap["ci"] = cmdMap["ci"][1:]
+			terminateService(&cmdSlice[cmdMap["ci"][0]])
 		},
 	}
 }
