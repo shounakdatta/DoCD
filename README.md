@@ -52,7 +52,7 @@ As of Release 0.1.0b3:
 To setup your project to automatically deploy to you dev/prod servers, in your server:
 
 1. Start your project with `docd build` or `docd start`
-2. Launch ngrok with `enable-ci`
+2. Launch ngrok with `enable-cd`
 3. Copy your ngrok public URL
 4. Add a new webhook in your Github repository
    1. Navigate to your webhook settings at `<your-github-repo-url>/settings/hooks/new`
@@ -60,7 +60,7 @@ To setup your project to automatically deploy to you dev/prod servers, in your s
    3. Set Content Type to `application/json`
    4. Hit `Add Webhook`
 
-NOTE: To disable continuous deployment while your project is running, enter `disable-ci`
+NOTE: To disable continuous deployment while your project is running, enter `disable-cd`
 
 With this, any latest change to the active git branch will be immediately deployed to the server.
 

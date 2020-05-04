@@ -22,8 +22,8 @@ var (
 func init() {
 	startshell.DeleteCmd("exit")
 	startshell.AddCmd(terminateServicesCmd())
-	startshell.AddCmd(enableCICmd())
-	startshell.AddCmd(disableCICmd())
+	startshell.AddCmd(enableCDCmd())
+	startshell.AddCmd(disableCDCmd())
 	startshell.Interrupt(interruptHandler)
 }
 
@@ -130,9 +130,9 @@ func terminateService(cmdRef *cmdReference) {
 	}
 }
 
-func enableCICmd() *ishell.Cmd {
+func enableCDCmd() *ishell.Cmd {
 	return &ishell.Cmd{
-		Name: "enable-ci",
+		Name: "enable-cd",
 		Help: "Enables continuous deployment",
 		Func: func(c *ishell.Context) {
 			command := strings.Split("ngrok http 6000", " ")
@@ -141,7 +141,7 @@ func enableCICmd() *ishell.Cmd {
 			cmd.Stderr = ciLogFile
 			err := cmd.Start()
 			cmdSlice = append(cmdSlice, cmdReference{Cmd: cmd})
-			cmdMap["ci"] = append(cmdMap["ci"], len(cmdSlice)-1)
+			cmdMap["cd"] = append(cmdMap["cd"], len(cmdSlice)-1)
 			if err != nil {
 				fmt.Println(err.Error())
 				os.Exit(1)
@@ -150,12 +150,12 @@ func enableCICmd() *ishell.Cmd {
 	}
 }
 
-func disableCICmd() *ishell.Cmd {
+func disableCDCmd() *ishell.Cmd {
 	return &ishell.Cmd{
-		Name: "disable-ci",
+		Name: "disable-cd",
 		Help: "Disables continuous deployment",
 		Func: func(c *ishell.Context) {
-			terminateService(&cmdSlice[cmdMap["ci"][0]])
+			terminateService(&cmdSlice[cmdMap["cd"][0]])
 		},
 	}
 }
