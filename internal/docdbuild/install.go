@@ -42,6 +42,8 @@ func InstallCmd() *cobra.Command {
 func installServicesAndDependencies(config docdtypes.Config) {
 	// Get working directory
 	dir, _ := os.Getwd()
+
+	installService(docdtypes.NGrokService, config.BasePackageManager)
 	for _, service := range config.Services {
 		if !installDependenciesOnly {
 			installService(service, config.BasePackageManager)

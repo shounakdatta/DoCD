@@ -28,3 +28,11 @@ const (
 	// ConfigFileName : Configuration file name
 	ConfigFileName = "DoCD-config.json"
 )
+
+var (
+	// NGrokService : Service configuration for launching ngrok
+	NGrokService = Service{
+		ServiceName: "ngrok",
+		LogFilePath: "./logs/ngrok-service.log",
+	}
+)
