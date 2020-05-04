@@ -27,7 +27,7 @@ class App extends Component {
     const { serverResponse } = this.state;
     return (
       <div>
-        <div>This is Client. Server do you read? ...</div>
+        <div>This is Client 6000. Server do you read? ...</div>
         <br />
         <div>{serverResponse}</div>
       </div>
